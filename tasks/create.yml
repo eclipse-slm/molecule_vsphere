@@ -1,0 +1,60 @@
+---
+- assert:
+    that:
+      - "{{ molecule_yml.platforms | length > 0 }}"
+
+- name: Prepare control node
+  include_tasks: helper/prepare_control_node.yml
+
+- name: Get vm prefix
+  ansible.builtin.include_tasks: helper/get_vm_prefix.yml
+
+- name: "Assure folder named '{{vsphere_folder_molecule}}' is created"
+  community.vmware.vcenter_folder:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    datacenter: "{{ vsphere_datacenter }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+    folder_name: "{{ vsphere_folder_molecule }}"
+    parent_folder: ""
+    folder_type: vm
+    state: present
+
+- name: "Assure folder named '{{vsphere_folder_molecule}}/{{vsphere_user}}' is created"
+  community.vmware.vcenter_folder:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    datacenter: "{{ vsphere_datacenter }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+
+    folder_name: "{{ vsphere_user }}"
+    parent_folder: "{{vsphere_folder_molecule}}"
+    folder_type: vm
+    state: present
+
+#- name: Create Networks
+#  include_tasks: helper/create_networks.yml
+#
+#- fail:
+
+- name: Create VM
+  include_tasks: helper/create_vm.yml
+  vars:
+    vsphere_folder_name: "{{vsphere_folder_molecule}}/{{vsphere_user}}"
+
+- name: Set results fact
+  include_tasks: helper/set_results.yml
+  loop: "{{ molecule_yml.platforms }}"
+  vars:
+      vsphere_folder_name: "{{vsphere_folder_molecule}}/{{vsphere_user}}"
+
+- set_fact:
+    server:
+      changed: true
+      results: "{{ results }}"
+
+
+
+

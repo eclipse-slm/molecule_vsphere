@@ -1,0 +1,18 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+##### UBUNTU
+  - name: windows10
+    template_name: windows-10
+provisioner:
+  name: ansible
+  playbooks:
+#    create: ../default/create.yml
+    converge: ../default/converge.yml
+    verify: ../default/verify.yml
+    destroy: ../default/destroy.yml
+verifier:
+  name: ansible

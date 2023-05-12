@@ -1,0 +1,18 @@
+---
+- name: Stat galaxy.yml file
+  ansible.builtin.stat:
+    path: "{{ molecule_scenario_directory }}/../../../../galaxy.yml"
+  register: galaxy_file
+
+- name: Lookup content of galaxy.yml file
+  when: galaxy_file.stat.exists
+  ansible.builtin.set_fact:
+    galaxy_yml: "{{ lookup('file', molecule_scenario_directory+'/../../../../galaxy.yml') | from_yaml }}"
+
+- name: Set vm_prefix
+  when: galaxy_yml is defined
+  ansible.builtin.set_fact:
+    vm_prefix: "{{ galaxy_yml.namespace+'_'+galaxy_yml.name+'_' }}"
+
+- name: Get Connection credentials
+  include_tasks: helper/lookup_connection_credentials.yml

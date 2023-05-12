@@ -1,0 +1,19 @@
+- name: Merge network lists
+  ansible.builtin.set_fact:
+    networks: "{{ (networks | default([]) + item.networks | default([])) | unique }}"
+  loop: "{{ molecule_yml.platforms }}"
+
+- debug:
+    var: networks
+
+- name: Create virtual networks
+  community.vmware.vmware_guest_info:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+    datacenter: "{{ vsphere_datacenter }}"
+
+    folder: "{{ vsphere_folder_name }}"
+    name: "{{username}}_{{vm_prefix}}{{ item.name }}"
+  loop: "{{ molecule_yml.platforms }}"

@@ -1,0 +1,23 @@
+---
+- set_fact:
+    vm_name: "{{username}}_{{vm_prefix}}{{ item.name }}"
+    vm_template_name: "{{ item.template_name }}"
+
+- name: "Deploy Virtual Machines into folder '{{ vsphere_folder_name }}'"
+  community.vmware.vmware_content_deploy_ovf_template:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    datacenter: "{{ vsphere_datacenter }}"
+    datastore_cluster: "{{ vsphere_datastore_cluster }}"
+    cluster: "{{ vsphere_cluster }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+
+    ovf_template: "{{ vm_template_name }}"
+    folder: "{{ vsphere_folder_name }}"
+    name: "{{ vm_name }}"
+  register: vmware_content_deploy_result
+  failed_when: false
+  changed_when: false
+  async: 600
+  poll: 0

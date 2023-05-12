@@ -1,0 +1,28 @@
+---
+# Control Node config:
+control_node_pip_packages:
+  - name: PyVmomi
+    version: 7.0.3
+  - name: git+https://github.com/vmware/vsphere-automation-sdk-python.git
+  - name: pywinrm
+
+# vsphere
+vsphere_datacenter: Ansible
+vsphere_datastore: Datastore01
+vsphere_datastore_cluster: Storage
+vsphere_cluster: Ansible
+vsphere_validate_certs: no
+vsphere_folder_molecule: molecule
+
+# vsphere - template
+vm_template_username: ansible
+vm_template_password: password
+
+# vm defaults
+vm_prefix: ""
+vm_disk_size_gb:
+  linux: 40
+  windows: 100
+vm_memory_mb: 4096
+vm_cpu: 2
+vm_cpu_cores: 1

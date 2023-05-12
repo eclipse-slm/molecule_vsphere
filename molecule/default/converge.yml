@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Include molecule_vsphere"
+      ansible.builtin.include_role:
+        name: "molecule_vsphere"
+        tasks_from: create.yml

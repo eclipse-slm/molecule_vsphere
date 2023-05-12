@@ -1,0 +1,38 @@
+---
+# This is an example playbook to execute Ansible tests.
+- name: Setup ansible inventory
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Include defaults
+      include_vars: ../../defaults/main.yml
+
+    - name: Get Connection credentials
+      include_tasks: ../../tasks/helper/lookup_connection_credentials.yml
+
+    - name: Add vm to ansible inventory
+      include_tasks: ../../tasks/helper/add_vm_to_ansible_inventory.yml
+      loop: "{{ molecule_yml.platforms }}"
+      vars:
+        vsphere_folder_name: "{{vsphere_folder_molecule}}/{{vsphere_user}}"
+        vm_name: "{{ item.name }}"
+        vm_template_name: "{{ item.template_name }}"
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test login
+      ansible.builtin.ping:
+
+#    - name: Test ping of www.docker.io
+#      shell: ping -c 1 www.docker.io
+#      register: output_ping_ip
+#      until: output_ping_ip.rc == 0
+#      retries: 10
+#
+#    - name: Test ping of www.google.de
+#      shell: ping -c 1 www.google.de
+#      register: output_ping_name
+#      until: output_ping_name.rc == 0
+#      retries: 10

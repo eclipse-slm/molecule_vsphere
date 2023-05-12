@@ -1,0 +1,36 @@
+---
+- set_fact:
+    vm_name: "{{username}}_{{vm_prefix}}{{ item.name }}"
+    vm_template_name: "{{ item.template_name }}"
+
+- name: "Make sure VMs are 'poweredon'"
+  community.vmware.vmware_guest:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    datacenter: "{{ vsphere_datacenter }}"
+    datastore: "{{ vsphere_datastore }}"
+    cluster: "{{ vsphere_cluster }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+
+    name: "{{ vm_name }}"
+    state: poweredon
+  register: vmware_poweron_result
+  async: 30
+  poll: 0
+
+#- name: Wait for vm being poweredon
+#  community.vmware.vmware_guest_info:
+#    hostname: "{{ vsphere_hostname }}"
+#    username: "{{ vsphere_user }}"
+#    password: "{{ vsphere_password }}"
+#    validate_certs: "{{ vsphere_validate_certs }}"
+#    datacenter: "{{ vsphere_datacenter }}"
+#
+#    folder: "{{ vsphere_folder_name }}"
+#    name: "{{ vm_name }}"
+#  register: guest_info
+#  until:
+#    - guest_info.instance.hw_power_status is defined
+#    - guest_info.instance.hw_power_status == "poweredOn"
+#  retries: 15

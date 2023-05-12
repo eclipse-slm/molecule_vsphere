@@ -1,0 +1,10 @@
+- name: "Remove VM '{{ vm_name }}'"
+  community.vmware.vmware_guest:
+    hostname: "{{ vsphere_hostname }}"
+    username: "{{ vsphere_user }}"
+    password: "{{ vsphere_password }}"
+    validate_certs: "{{ vsphere_validate_certs }}"
+
+    name: "{{ vm_name }}"
+    state: absent
+    force: yes

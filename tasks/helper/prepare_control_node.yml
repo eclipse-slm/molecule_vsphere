@@ -1,0 +1,5 @@
+- name: "Install pip packages on control node"
+  ansible.builtin.pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('') }}"
+  loop: "{{ control_node_pip_packages }}"

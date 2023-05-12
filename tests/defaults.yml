@@ -1,0 +1,42 @@
+molecule_yml:
+  platforms:
+    - name: ubuntu-22-01
+      template_name: ubuntu-22-04
+      groups:
+        - test-machine
+#    - name: ubuntu-22-02
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-03
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-04
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-05
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-06
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-07
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-08
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-09
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine
+#    - name: ubuntu-22-10
+#      template_name: ubuntu-22-04
+#      groups:
+#        - test-machine

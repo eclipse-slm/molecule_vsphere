@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Include defaults
+      include_vars: defaults.yml
+
+    - name: Test molecule_vsphere - destroy
+      ansible.builtin.include_role:
+        name: molecule_vsphere
+        tasks_from: destroy.yml

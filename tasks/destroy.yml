@@ -1,0 +1,25 @@
+---
+- name: Get Connection credentials
+  include_tasks: helper/lookup_connection_credentials.yml
+
+- assert:
+    that:
+      - "{{ molecule_yml.platforms | length > 0 }}"
+
+- name: Get vm prefix
+  ansible.builtin.include_tasks: helper/get_vm_prefix.yml
+
+- name: Set username var
+  ansible.builtin.set_fact:
+    username: "{{ vsphere_user | split('@') | first }}"
+
+- name: Prepare control node
+  include_tasks: helper/prepare_control_node.yml
+
+- name: Delete VM
+  include_tasks: helper/delete_vm.yml
+  loop: "{{ molecule_yml.platforms }}"
+  vars:
+    vsphere_folder_name: "{{vsphere_folder_molecule}}/{{vsphere_user}}"
+    vm_name: "{{username}}_{{vm_prefix}}{{ item.name }}"
+    vm_template_name: "{{ item.template_name }}"

@@ -1,0 +1,21 @@
+1. create ansible.cfg file:
+
+$ mkdir -p /etc/ansible && ansible-config init --disabled > /etc/ansible/ansible.cfg
+
+2. install nano
+
+$ apt update && apt install nano
+
+3. search for "roles_path" and enable roles_path config
+
+$ nano /etc/ansible/ansible.cfg
+
+4. add /tmp/roles to roles_path
+
+roles_path=~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/tmp/roles
+
+
+ODER:
+
+$ ansible-galaxy role remove molecule_vsphere
+$ mkdir -p ~/.ansible/roles && ln -s /tmp/roles/ ~/.ansible/roles/molecule_vsphere
